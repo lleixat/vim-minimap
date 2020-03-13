@@ -5,7 +5,7 @@ import sys # TODO do better?
 
 try:
     from PIL import Image
-except:
+except ImportError:
     from sys import stderr
     stderr.write('[E] PIL not installed\n')
     exit(1)
@@ -30,7 +30,7 @@ def getTerminalSize():
             fd = os.open(os.ctermid(), os.O_RDONLY)
             cr = ioctl_GWINSZ(fd)
             os.close(fd)
-        except:
+        except FileNotFoundError:
             pass
     if not cr:
         cr = (env.get('LINES', 25), env.get('COLUMNS', 80))

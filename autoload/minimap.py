@@ -217,6 +217,6 @@ def closeminimap():
         # (ex. tagbar toggle) which will lead to an exception
         try:
             vim.current.window = src
-        except:
+        except TypeError: # TODO check
             vim.current.window = vim.windows[0]
 

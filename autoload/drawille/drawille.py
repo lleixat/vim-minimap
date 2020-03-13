@@ -58,7 +58,7 @@ def getTerminalSize():
         try:
             import fcntl, termios, struct
             cr = struct.unpack('hh', fcntl.ioctl(fd, termios.TIOCGWINSZ, '1234'))
-        except:
+        except ImportError:
             return
         return cr
 
@@ -69,7 +69,7 @@ def getTerminalSize():
             fd = os.open(os.ctermid(), os.O_RDONLY)
             cr = ioctl_GWINSZ(fd)
             os.close(fd)
-        except:
+        except FileNotFoundError:
             pass
 
     if not cr:
