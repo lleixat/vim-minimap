@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
+import sys # TODO better?
 from sys import argv
 try:
     from PIL import Image
 except:
     from sys import stderr
     stderr.write('[E] PIL not installed')
-    exit(1)
+    sys.exit(1)
 from StringIO import StringIO
 import urllib2
 import re
@@ -38,7 +39,7 @@ def getTerminalSize():
 
 def usage():
     print('Usage: %s <url/id>')
-    exit()
+    sys.exit()
 
 if __name__ == '__main__':
     if len(argv) < 2:
