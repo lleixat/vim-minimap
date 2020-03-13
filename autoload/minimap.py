@@ -139,7 +139,7 @@ def updateminimap():
         vim.command("normal! L")
         bottomline = src.cursor[0]
 
-        def draw(lengths,indents, startline=0):
+        def draw(lengths, indents):
 
             c = Canvas()
 
