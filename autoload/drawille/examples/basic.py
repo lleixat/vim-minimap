@@ -3,37 +3,37 @@ from drawille import Canvas
 import math
 
 
-s = Canvas()
+canvas = Canvas()
 
 for x in range(1800):
-    s.set(x/10, math.sin(math.radians(x)) * 10)
+    canvas.set(x/10, math.sin(math.radians(x)) * 10)
 
-print(s.frame())
+print(canvas.frame())
 
-s.clear()
+canvas.clear()
 
 for x in range(0, 1800, 10):
-    s.set(x/10, 10 + math.sin(math.radians(x)) * 10)
-    s.set(x/10, 10 + math.cos(math.radians(x)) * 10)
+    canvas.set(x/10, 10 + math.sin(math.radians(x)) * 10)
+    canvas.set(x/10, 10 + math.cos(math.radians(x)) * 10)
 
-print(s.frame())
+print(canvas.frame())
 
-s.clear()
+canvas.clear()
 
 for x in range(0, 3600, 20):
-    s.set(x/20, 4 + math.sin(math.radians(x)) * 4)
+    canvas.set(x/20, 4 + math.sin(math.radians(x)) * 4)
 
-print(s.frame())
+print(canvas.frame())
 
-s.clear()
+canvas.clear()
 
 for x in range(0, 360, 4):
-    s.set(x/4, 30 + math.sin(math.radians(x)) * 30)
+    canvas.set(x/4, 30 + math.sin(math.radians(x)) * 30)
 
 for x in range(30):
     for y in range(30):
-        s.set(x,y)
-        s.toggle(x+30, y+30)
-        s.toggle(x+60, y)
+        canvas.set(x,y)
+        canvas.toggle(x+30, y+30)
+        canvas.toggle(x+60, y)
 
-print(s.frame())
+print(canvas.frame())

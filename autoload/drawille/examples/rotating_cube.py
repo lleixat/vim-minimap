@@ -66,39 +66,39 @@ faces = [(0,1,2,3),(1,5,6,2),(5,4,7,6),(4,0,3,7),(0,4,5,1),(3,2,6,7)]
 
 def __main__(stdscr, projection=False):
     angleX, angleY, angleZ = 0, 0, 0
-    c = Canvas()
+    canvas = Canvas()
     while 1:
         # Will hold transformed vertices.
-        t = []
+        transformed_vertices = []
 
-        for v in vertices:
+        for vertex in vertices:
             # Rotate the point around X axis, then around Y axis, and finally around Z axis.
-            p = v.rotateX(angleX).rotateY(angleY).rotateZ(angleZ)
+            point = vertex.rotateX(angleX).rotateY(angleY).rotateZ(angleZ)
             if projection:
                 # Transform the point from 3D to 2D
-                p = p.project(50, 50, 50, 50)
+                point = point.project(50, 50, 50, 50)
              #Put the point in the list of transformed vertices
-            t.append(p)
+            transformed_vertices.append(point)
 
-        for f in faces:
-            for x,y in line(t[f[0]].x, t[f[0]].y, t[f[1]].x, t[f[1]].y):
-                c.set(x,y)
-            for x,y in line(t[f[1]].x, t[f[1]].y, t[f[2]].x, t[f[2]].y):
-                c.set(x,y)
-            for x,y in line(t[f[2]].x, t[f[2]].y, t[f[3]].x, t[f[3]].y):
-                c.set(x,y)
-            for x,y in line(t[f[3]].x, t[f[3]].y, t[f[0]].x, t[f[0]].y):
-                c.set(x,y)
+        for face in faces:
+            for x, y in line(transformed_vertices[face[0]].x, transformed_vertices[face[0]].y, transformed_vertices[face[1]].x, transformed_vertices[face[1]].y):
+                canvas.set(x,y)
+            for x, y in line(transformed_vertices[face[1]].x, transformed_vertices[face[1]].y, transformed_vertices[face[2]].x, transformed_vertices[face[2]].y):
+                canvas.set(x,y)
+            for x, y in line(transformed_vertices[face[2]].x, transformed_vertices[face[2]].y, transformed_vertices[face[3]].x, transformed_vertices[face[3]].y):
+                canvas.set(x,y)
+            for x, y in line(transformed_vertices[face[3]].x, transformed_vertices[face[3]].y, transformed_vertices[face[0]].x, transformed_vertices[face[0]].y):
+                canvas.set(x,y)
 
-        f = c.frame(-40, -40, 80, 80)
-        stdscr.addstr(0, 0, '{0}\n'.format(f))
+        frame = canvas.frame(-40, -40, 80, 80)
+        stdscr.addstr(0, 0, '{0}\n'.format(frame))
         stdscr.refresh()
 
         angleX += 2
         angleY += 3
         angleZ += 5
         sleep(1.0/20)
-        c.clear()
+        canvas.clear()
 
 if __name__ == '__main__':
     from sys import argv

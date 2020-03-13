@@ -407,8 +407,8 @@ def animate(canvas, fn, delay=1./24, *args, **kwargs):
             for x,y in frame:
                 canvas.set(x,y)
 
-            f = canvas.frame()
-            stdscr.addstr(0, 0, '{0}\n'.format(f))
+            frame = canvas.frame()
+            stdscr.addstr(0, 0, '{0}\n'.format(frame))
             stdscr.refresh()
             if delay:
                 sleep(delay)

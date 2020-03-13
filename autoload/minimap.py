@@ -34,19 +34,19 @@ WIDTH = 20
 MINIMAP = "vim-minimap"
 
 def getmmwindow():
-    for b in vim.buffers:
-        if b.name.endswith(MINIMAP):
-            for w in vim.windows:
-                if w.buffer == b:
-                    return w
+    for buffer in vim.buffers:
+        if buffer.name.endswith(MINIMAP):
+            for window in vim.windows:
+                if window.buffer == buffer:
+                    return window
     return None
 
 def getmainwindow():
-    for b in vim.buffers:
-        if not b.name.endswith(MINIMAP) and not "NERD_tree" in b.name:
-            for w in vim.windows:
-                if w.buffer == b:
-                    return w
+    for buffer in vim.buffers:
+        if not buffer.name.endswith(MINIMAP) and not "NERD_tree" in buffer.name:
+            for window in vim.windows:
+                if window.buffer == buffer:
+                    return window
     return None
 
 def setmmautocmd(clear = False):
@@ -140,13 +140,13 @@ def updateminimap():
 
         def draw(lengths, indents):
 
-            c = Canvas()
+            canvas = Canvas()
 
             for y, l in enumerate(lengths):
                 indent = int(indents[y] * HORIZ_SCALE)
                 for x in range(2 * min(int(l * HORIZ_SCALE), WIDTH)):
                     if(x>=indent):
-                        c.set(x, y)
+                        canvas.set(x, y)
 
             # pad with spaces to ensure uniform block highlighting
             if PY3:
