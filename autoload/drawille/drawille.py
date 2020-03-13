@@ -138,10 +138,10 @@ class Canvas(object):
         y = normalize(y)
         col, row = get_pos(x, y)
 
-        if type(self.chars[row][col]) == int:
+        if isinstance(self.chars[row][col], int):
             self.chars[row][col] &= ~pixel_map[y % 4][x % 2]
 
-        if type(self.chars[row][col]) != int or self.chars[row][col] == 0:
+        if not isinstance(self.chars[row][col], int) or self.chars[row][col] == 0:
             del(self.chars[row][col])
 
         if not self.chars.get(row):
@@ -158,7 +158,7 @@ class Canvas(object):
         y = normalize(y)
         col, row = get_pos(x, y)
 
-        if type(self.chars[row][col]) != int or self.chars[row][col] & pixel_map[y % 4][x % 2]:
+        if not isinstance(self.chars[row][col], int) or self.chars[row][col] & pixel_map[y % 4][x % 2]:
             self.unset(x, y)
         else:
             self.set(x, y)
@@ -191,7 +191,7 @@ class Canvas(object):
         if not char:
             return False
 
-        if type(char) != int:
+        if not isinstance(char, int):
             return True
 
         return bool(char & dot_index)
@@ -228,7 +228,7 @@ class Canvas(object):
 
                 if not char:
                     row.append(' ')
-                elif type(char) != int:
+                elif not isinstance(char, int):
                     row.append(char)
                 else:
                     row.append(unichr(braille_char_offset+char))
