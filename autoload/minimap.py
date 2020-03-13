@@ -29,7 +29,6 @@ for p in vim.eval("&runtimepath").split(','):
             sys.path.append(plugin_dir)
         break
 
-from drawille import *
 
 WIDTH = 20
 MINIMAP = "vim-minimap"
