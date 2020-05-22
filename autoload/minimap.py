@@ -153,7 +153,7 @@ def updateminimap():
             if PY3:
                 return [line.ljust(WIDTH, u'\u00A0') for line in canvas.rows()]
             else:
-                return [unicode(line).ljust(WIDTH, u'\u00A0') for line in c.rows()]
+                return [unicode(line).ljust(WIDTH, u'\u00A0') for line in canvas.rows()]
 
         if minimap:
 
