@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
+import sys # TODO better?
 from sys import argv
 try:
     from PIL import Image
-except:
+except ImportError:
     from sys import stderr
     stderr.write('[E] PIL not installed')
-    exit(1)
+    sys.exit(1)
 from StringIO import StringIO
 import urllib2
 import re
@@ -29,7 +30,7 @@ def getTerminalSize():
             fd = os.open(os.ctermid(), os.O_RDONLY)
             cr = ioctl_GWINSZ(fd)
             os.close(fd)
-        except:
+        except FileNotFoundError:
             pass
     if not cr:
         cr = (env.get('LINES', 25), env.get('COLUMNS', 80))
@@ -38,7 +39,7 @@ def getTerminalSize():
 
 def usage():
     print('Usage: %s <url/id>')
-    exit()
+    sys.exit()
 
 if __name__ == '__main__':
     if len(argv) < 2:

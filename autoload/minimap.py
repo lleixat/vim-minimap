@@ -29,25 +29,24 @@ for p in vim.eval("&runtimepath").split(','):
             sys.path.append(plugin_dir)
         break
 
-from drawille import *
 
 WIDTH = 20
 MINIMAP = "vim-minimap"
 
 def getmmwindow():
-    for b in vim.buffers:
-        if b.name.endswith(MINIMAP):
-            for w in vim.windows:
-                if w.buffer == b:
-                    return w
+    for buffer in vim.buffers:
+        if buffer.name.endswith(MINIMAP):
+            for window in vim.windows:
+                if window.buffer == buffer:
+                    return window
     return None
 
 def getmainwindow():
-    for b in vim.buffers:
-        if not b.name.endswith(MINIMAP) and not "NERD_tree" in b.name:
-            for w in vim.windows:
-                if w.buffer == b:
-                    return w
+    for buffer in vim.buffers:
+        if not buffer.name.endswith(MINIMAP) and not "NERD_tree" in buffer.name:
+            for window in vim.windows:
+                if window.buffer == buffer:
+                    return window
     return None
 
 def setmmautocmd(clear = False):
@@ -139,15 +138,15 @@ def updateminimap():
         vim.command("normal! L")
         bottomline = src.cursor[0]
 
-        def draw(lengths,indents, startline=0):
+        def draw(lengths, indents):
 
-            c = Canvas()
+            canvas = Canvas()
 
             for y, l in enumerate(lengths):
                 indent = int(indents[y] * HORIZ_SCALE)
                 for x in range(2 * min(int(l * HORIZ_SCALE), WIDTH)):
                     if(x>=indent):
-                        c.set(x, y)
+                        canvas.set(x, y)
 
             # pad with spaces to ensure uniform block highlighting
             if PY3:
@@ -218,6 +217,6 @@ def closeminimap():
         # (ex. tagbar toggle) which will lead to an exception
         try:
             vim.current.window = src
-        except:
+        except TypeError: # TODO check
             vim.current.window = vim.windows[0]
 

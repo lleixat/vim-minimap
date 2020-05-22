@@ -58,7 +58,7 @@ def getTerminalSize():
         try:
             import fcntl, termios, struct
             cr = struct.unpack('hh', fcntl.ioctl(fd, termios.TIOCGWINSZ, '1234'))
-        except:
+        except ImportError:
             return
         return cr
 
@@ -69,7 +69,7 @@ def getTerminalSize():
             fd = os.open(os.ctermid(), os.O_RDONLY)
             cr = ioctl_GWINSZ(fd)
             os.close(fd)
-        except:
+        except FileNotFoundError:
             pass
 
     if not cr:
@@ -138,10 +138,10 @@ class Canvas(object):
         y = normalize(y)
         col, row = get_pos(x, y)
 
-        if type(self.chars[row][col]) == int:
+        if isinstance(self.chars[row][col], int):
             self.chars[row][col] &= ~pixel_map[y % 4][x % 2]
 
-        if type(self.chars[row][col]) != int or self.chars[row][col] == 0:
+        if not isinstance(self.chars[row][col], int) or self.chars[row][col] == 0:
             del(self.chars[row][col])
 
         if not self.chars.get(row):
@@ -158,7 +158,7 @@ class Canvas(object):
         y = normalize(y)
         col, row = get_pos(x, y)
 
-        if type(self.chars[row][col]) != int or self.chars[row][col] & pixel_map[y % 4][x % 2]:
+        if not isinstance(self.chars[row][col], int) or self.chars[row][col] & pixel_map[y % 4][x % 2]:
             self.unset(x, y)
         else:
             self.set(x, y)
@@ -191,7 +191,7 @@ class Canvas(object):
         if not char:
             return False
 
-        if type(char) != int:
+        if not isinstance(char, int):
             return True
 
         return bool(char & dot_index)
@@ -209,10 +209,10 @@ class Canvas(object):
         if not self.chars.keys():
             return []
 
-        minrow = min_y // 4 if min_y != None else min(self.chars.keys())
-        maxrow = (max_y - 1) // 4 if max_y != None else max(self.chars.keys())
-        mincol = min_x // 2 if min_x != None else min(min(x.keys()) for x in self.chars.values())
-        maxcol = (max_x - 1) // 2 if max_x != None else max(max(x.keys()) for x in self.chars.values())
+        minrow = min_y // 4 if min_y is not None else min(self.chars.keys())
+        maxrow = (max_y - 1) // 4 if max_y is not None else max(self.chars.keys())
+        mincol = min_x // 2 if min_x is not None else min(min(x.keys()) for x in self.chars.values())
+        maxcol = (max_x - 1) // 2 if max_x is not None else max(max(x.keys()) for x in self.chars.values())
         ret = []
 
         for rownum in range(minrow, maxrow+1):
@@ -220,7 +220,7 @@ class Canvas(object):
                 ret.append('')
                 continue
 
-            maxcol = (max_x - 1) // 2 if max_x != None else max(self.chars[rownum].keys())
+            maxcol = (max_x - 1) // 2 if max_x is not None else max(self.chars[rownum].keys())
             row = []
 
             for x in  range(mincol, maxcol+1):
@@ -228,7 +228,7 @@ class Canvas(object):
 
                 if not char:
                     row.append(' ')
-                elif type(char) != int:
+                elif not isinstance(char, int):
                     row.append(char)
                 else:
                     row.append(unichr(braille_char_offset+char))
@@ -407,8 +407,8 @@ def animate(canvas, fn, delay=1./24, *args, **kwargs):
             for x,y in frame:
                 canvas.set(x,y)
 
-            f = canvas.frame()
-            stdscr.addstr(0, 0, '{0}\n'.format(f))
+            frame = canvas.frame()
+            stdscr.addstr(0, 0, '{0}\n'.format(frame))
             stdscr.refresh()
             if delay:
                 sleep(delay)
