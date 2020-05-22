@@ -29,6 +29,7 @@ for p in vim.eval("&runtimepath").split(','):
             sys.path.append(plugin_dir)
         break
 
+from drawille import *
 
 WIDTH = 20
 MINIMAP = "vim-minimap"
@@ -150,7 +151,7 @@ def updateminimap():
 
             # pad with spaces to ensure uniform block highlighting
             if PY3:
-                return [line.ljust(WIDTH, u'\u00A0') for line in c.rows()]
+                return [line.ljust(WIDTH, u'\u00A0') for line in canvas.rows()]
             else:
                 return [unicode(line).ljust(WIDTH, u'\u00A0') for line in c.rows()]
 
@@ -181,7 +182,7 @@ def updateminimap():
             minimap.buffer[:] = draw(lengths,indents)
             # Highlight the current visible zone
             top = int((topline - first) / 4)
-            bottom = int((bottomline -first)/ 4 + 1)
+            bottom = int((bottomline -first)/ 4 + 1) + 1
             vim.command("match {0} /\\%>0v\\%<{1}v\\%>{2}l\\%<{3}l./".format(
                 highlight_group, WIDTH + 1, top, bottom))
 
